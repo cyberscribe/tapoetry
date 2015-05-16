@@ -128,5 +128,3 @@ class TapoetryLoader extends MvcPluginLoader {
     }
     
 }
-
-?>

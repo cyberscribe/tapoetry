@@ -3,37 +3,41 @@
 class ReadingsController extends MvcPublicController {
 
     public function show() {
-            if (!isset($this->params['extra']) || strlen($this->params['extra']) == 0) {
-                    $reading = $this->Reading->find_one();
-                    $extra = urlify( $reading->title );
-                    $base = $_SERVER['REQUEST_URI'];
-                    $base = substr( $base, 0, (strlen($base) - 1) );
-                    $this->redirect( $base . '-' . $extra);
-            }
-            parent::show();
+        /* If the seo-friendly text has not been appended, redirect to a version with it appended */
+        if (!isset($this->params['extra']) || strlen($this->params['extra']) == 0) {
+                $reading = $this->Reading->find_one();
+                $extra = urlify( $reading->title );
+                $base = $_SERVER['REQUEST_URI'];
+                $base = substr( $base, 0, (strlen($base) - 1) );
+                $this->redirect( $base . '-' . $extra);
+        }
+        /* Otherwise, use default show behaviour from MvcPublicController */
+        parent::show();
     }
 
+    /* Check whether an event is currently live, return json representation if so or json false otherwise */
     public function liveNow() {
-            header('Cache-Control: max-age=1');
-            $object = $this->model->find_one( array( conditions => array(
-                                            'AND' => array(
-                                                    'Reading.date' => date('Y-m-d'),
-                                                    'Reading.time >=' => date('H:i:s'),
-                                                    'Reading.time <=' => date('H:i:s', time() + 3600),
-                                            )
-                                )
-                    ) );
-            if (is_object($object)) {
-                    $this->set('object',$object);
-                    $this->render_view('readings/liveNow', array('layout' => 'bare'));
-            } else {
-                    header('Content-type: application/json');
-                    header('HTTP/1.x 204 No Content');
-                    echo json_encode(false);
-                    die();
-            }
+        header('Cache-Control: max-age=1');
+        $object = $this->model->find_one( array( conditions => array(
+                                        'AND' => array(
+                                                'Reading.date' => date('Y-m-d'),
+                                                'Reading.time >=' => date('H:i:s'),
+                                                'Reading.time <=' => date('H:i:s', time() + 3600),
+                                        )
+                            )
+                ) );
+        if (is_object($object)) {
+                $this->set('object',$object);
+                $this->render_view('readings/liveNow', array('layout' => 'bare'));
+        } else {
+                header('Content-type: application/json');
+                header('HTTP/1.x 204 No Content');
+                echo json_encode(false);
+                die();
+        }
     }
 
+    /* Use wpgd (a wrapper to php gd) to compose and render a banner image for the reading */
     public function banner() {
 
         /* Initialize */
@@ -89,6 +93,7 @@ class ReadingsController extends MvcPublicController {
         die();
     }
 
+    /* Use wpgd (a wrapper to php gd) to compose and render a splash screen image for the reading */
     public function splash() {
         /* Initialize */
         $this->init_image();
@@ -143,11 +148,13 @@ class ReadingsController extends MvcPublicController {
         die();
     }
 
+    /* Initalise some settings needed for fonts and time representations */
     private function init_image() {
         putenv('GDFONTPATH=' . plugin_dir_path( __FILE__ ).'../public/fonts');
         date_default_timezone_set('Europe/London');
     }
 
+    /* Display event time in multiple timezones for a global audience */
     private function get_time_str( $dt ) {
         if( date('I',$dt) == 1) {
             $tz1 = 'BST';

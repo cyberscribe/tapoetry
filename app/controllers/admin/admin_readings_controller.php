@@ -54,5 +54,4 @@ class AdminReadingsController extends MvcAdminController {
 		return empty($object->partner) ? null : HtmlHelper::admin_object_link($object->partner, array('action' => 'edit'));
 	}
 
-
 }

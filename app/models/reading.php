@@ -6,12 +6,13 @@ class Reading extends MvcModel {
 	var $order = 'Reading.date DESC';
 	var $includes = array('Partner', 'Poet', 'Host');
 	var $belongs_to = array('Partner','Host');
+    /* Used to specify many-to-many relationship between readings and poets */
 	var $has_and_belongs_to_many = array(
 		'Poet' => array(
 			'join_table' => '{prefix}readings_poets',
 		)
 	);
-    var $per_page = 99999;
+    var $per_page = 99999; //do not paginate
 
     var $wp_post = array(
         'post_type' => array(
@@ -35,6 +36,7 @@ class Reading extends MvcModel {
         return $url;
     }
 
+    /* After find, compose a list of poet names involved for convenience */
 	public function after_find(&$object) {
 		if (isset($object->poets)) {
 			$poet_names = array();

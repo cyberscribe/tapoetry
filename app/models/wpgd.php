@@ -1,6 +1,8 @@
 <?php
+/* A wrapper to php gd with some Wordpress-specific functionality built in */
 class wpgd {
 
+    /* Convert an existing image to an image resource for manipulation */
     static function imagecreatefromextension( $file ) {
         switch (strtolower(pathinfo($file, PATHINFO_EXTENSION))) {
             case 'jpeg':
@@ -16,6 +18,7 @@ class wpgd {
         }
     }
 
+    /* Get the attachment ID from the image url */
     static function get_attachment_id_from_src($image_src) {
         global $wpdb;
         $query = "SELECT ID FROM {$wpdb->posts} WHERE guid='$image_src'";
@@ -23,6 +26,7 @@ class wpgd {
         return $id;
     }
 
+    /* Perform the signature circular crop to match Google Plus profiles */
     static function imagecircularcrop( &$img, $w, $h) {
         imagealphablending($img,true);
         $mask = imagecreatetruecolor($w,$h);
@@ -36,6 +40,7 @@ class wpgd {
         imagecolortransparent($img, $greenscreen);
     }
 
+    /* Get image from URL, resize it, return the image */
     static function resizefromurl( $url, $w, $h ) {
         $url_post_id = wpgd::get_attachment_id_from_src($url);
         $url_img_path = get_attached_file($url_post_id);

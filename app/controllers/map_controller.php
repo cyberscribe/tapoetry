@@ -2,6 +2,7 @@
 
 class MapController extends MvcPublicController {
 
+    /* Get all poets, partners, and hosts in one array of objects for map view to render in map layout */
     public function index() {
         $poet_model = mvc_model('Poet');
         $poets = $poet_model->find();

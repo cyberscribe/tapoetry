@@ -9,5 +9,3 @@ class AdminPartnersController extends MvcAdminController {
 	var $default_searchable_fields = array('name','description');
 	
 }
-
-?>

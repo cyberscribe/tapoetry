@@ -8,10 +8,12 @@ Version: 1.0
 Author URI: http://www.robertpeake.com/
 */
 
+/* standard wp-mvc activate/deactivate hooks here*/
 register_activation_hook(__FILE__, 'tapoetry_activate');
 register_deactivation_hook(__FILE__, 'tapoetry_deactivate');
 
 function tapoetry_activate() {
+    /* an extra check that wp-mvc is installed */
     if (!class_exists('MvcConfiguration')) {
         tapoetry_trigger_error_message(__('This plugin depends upon the wp-mvc plugin being installed and activated.','tapoetry'));
     }
@@ -26,6 +28,7 @@ function tapoetry_deactivate() {
     $loader->deactivate();
 }
 
+/* display error messages independent of context */
 function tapoetry_trigger_error_message($message) {
     if(isset($_GET['action']) && $_GET['action'] == 'error_scrape') {
         echo '<div class="wrap"><p style="font-family: \'Open Sans\',sans-serif; font-size: 13px; color: #444;">' . $message .
@@ -35,6 +38,7 @@ function tapoetry_trigger_error_message($message) {
     }
 }
 
+/* add the mvc_* content types to the search */
 function filter_search($query) {
     if ($query->is_search) {
         $query->set('post_type', array('post', 'page', 'mvc_poet', 'mvc_host', 'mvc_partner', 'mvc_reading'));
@@ -42,6 +46,7 @@ function filter_search($query) {
     return $query;
 };
 
+/* convert "The Great New Reading" to "the-great-new-reading" for seo-friendly URLs */
 function urlify( $string ) {
     $string = str_replace('.', '', $string);
     $string = str_replace('/', '', $string);
@@ -51,6 +56,7 @@ function urlify( $string ) {
     return $string;
 }
 
+/* Inject OG meta-data to improve social sharing */
 function mvc_metadata() {
     global $post;
     if (is_mvc_page()) {
@@ -78,6 +84,7 @@ function mvc_metadata() {
     }
 }
 
+/* A special shortcode to display readings embedded on a page */
 function tapoetry_readings( $atts ) {
         extract( shortcode_atts( array(
         'type' => 'upcoming',
@@ -106,7 +113,14 @@ function tapoetry_readings( $atts ) {
     return $return;    
 }
 
-add_shortcode( 'tapoetry-readings', 'tapoetry_readings' );
+/* Add a bit of CSS to the admin */
+function tapoetry_on_mvc_admin_init($options) {
+	wp_register_style('mvc_admin', mvc_css_url('tapoetry', 'admin'));
+	wp_enqueue_style('mvc_admin');
+}
 
+/* Add shortocode, meta-data, admin css, and mvc_* content types for search */
+add_shortcode( 'tapoetry-readings', 'tapoetry_readings' );
 add_action('wp_head', 'mvc_metadata');
+add_action('mvc_admin_init', 'tapoetry_on_mvc_admin_init');
 add_filter('pre_get_posts', 'filter_search');

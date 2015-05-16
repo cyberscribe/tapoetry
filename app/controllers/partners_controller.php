@@ -2,10 +2,9 @@
 
 class PartnersController extends MvcPublicController {
 	
+    /* @see HostsController::show() */
 	public function show() {
         global $post;
-
-
 	
 		$object = $this->model->find_by_id($this->params['id'], array(
 			'includes' => array('Reading')
@@ -26,5 +25,3 @@ class PartnersController extends MvcPublicController {
 	}
 	
 }
-
-?>
