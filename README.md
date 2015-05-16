@@ -1,6 +1,6 @@
 # TAPoetry wp-mvc Demo Application
 
-This Wordpress plugin demonstrates some of the capabilites of the [wp-mvc](https://github.com/tombenner/wp-mvc) plugin framework. Like the [simple event calendar example](https://github.com/tombenner/wp-mvc/tree/master/examples/events-calendar-example) that comes bundled with wp-mvc, it demonstrates many of the features outlined in the [documentation](http://wpmvc.org/). However, unlike this theoretical example, the TAPoetry plugin is a fully-fledged application currently in use to support [a dynamic global arts organisation](http://www.transatlanticpoetry.com/).
+This Wordpress plugin demonstrates some of the capabilites of the [wp-mvc](https://github.com/tombenner/wp-mvc) plugin framework. Like the [simple event calendar example](https://github.com/tombenner/wp-mvc/tree/master/examples/events-calendar-example) that comes bundled with wp-mvc, it demonstrates many of the features outlined in the [documentation](http://wpmvc.org/). However, unlike this simple theoretical example, the TAPoetry plugin is a fully-fledged application currently in use to support [a dynamic global arts organisation](http://www.transatlanticpoetry.com/).
 
 Our hope is that you will borrow from it extensively in your own wp-mvc applications. It may also serve as a useful talking point for future [updates and improvements](https://github.com/tombenner/wp-mvc/issues) to the core wp-mvc framework itself.
 
