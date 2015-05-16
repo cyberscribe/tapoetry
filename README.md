@@ -9,6 +9,7 @@ Our hope is that you will borrow from it extensively in your own wp-mvc applicat
  * This plugin requires that [wp-mvc](http://wpmvc.org/) be installed from either the [plugin repository](https://wordpress.org/plugins/wp-mvc/) or from [github](https://github.com/tombenner/wp-mvc) and be activated in order to work.
  * This plugin also requires [php gd](https://php.net/manual/en/book.image.php) to render banner and splash screen images
  * This plugin uses a [jetpack shortocde](http://jetpack.me/support/shortcode-embeds/) to display YouTube videos on the readings page
+ * View in this plugin are designed to be used with a [Bootstrap](http://getbootstrap.com/)-based theme
  
 ## See It In Action
 
