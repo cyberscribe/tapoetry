@@ -39,7 +39,7 @@ function tapoetry_trigger_error_message($message) {
 }
 
 /* add the mvc_* content types to the search */
-function filter_search($query) {
+function tapoetry_filter_search($query) {
     if ($query->is_search) {
         $query->set('post_type', array('post', 'page', 'mvc_poet', 'mvc_host', 'mvc_partner', 'mvc_reading'));
     };
@@ -57,7 +57,7 @@ function urlify( $string ) {
 }
 
 /* Inject OG meta-data to improve social sharing */
-function mvc_metadata() {
+function tapoetry_mvc_metadata() {
     global $post;
     if (is_mvc_page()) {
         $cur_url = parse_url($_SERVER["REQUEST_URI"]);
@@ -115,12 +115,59 @@ function tapoetry_readings( $atts ) {
 
 /* Add a bit of CSS to the admin */
 function tapoetry_on_mvc_admin_init($options) {
-	wp_register_style('mvc_admin', mvc_css_url('tapoetry', 'admin'));
-	wp_enqueue_style('mvc_admin');
+    wp_register_style('mvc_admin', mvc_css_url('tapoetry', 'admin'));
+    wp_enqueue_style('mvc_admin');
 }
+function tapoetry_thumbnail_sepia_size() {
+    add_image_size('medium-sepia', 400, 400, true);
+}
+function tapoetry_add_custom_sizes( $sizes ) {
+    $new_sizes = array();
+    foreach($sizes as $key => $value) {
+        $new_sizes[$key] = $value;
+        if ($key == 'medium') { //place this menu item directly after the "Medium" item
+            $new_sizes['medium-sepia'] = __( 'Medium Sepia', 'tapoetry' );
+        }
+    }
+    return $new_sizes;
+}
+function tapoetry_thumbnail_sepia_filter($meta) {
+    try {
+        $file = wp_upload_dir();
+        $file = trailingslashit($file['path']).$meta['sizes']['medium-sepia']['file'];
+        list($orig_w, $orig_h, $orig_type) = @getimagesize($file);
+        $image = wp_load_image($file);
+        /* Signature sepia tint for images */
+        imagefilter($image, IMG_FILTER_BRIGHTNESS, -26); // 10% decrease to compensate for tint
+        imagefilter($image, IMG_FILTER_CONTRAST, 13); //5% decrease to avoid blow-out
+        imagefilter($image, IMG_FILTER_GRAYSCALE); //desaturate
+        imagefilter($image, IMG_FILTER_COLORIZE, 51, 39, 5); //tint
+        imagefilter($image, IMG_FILTER_BRIGHTNESS, -26); // 10% decrease to compensate for tint
+        imagefilter($image, IMG_FILTER_CONTRAST, -13); //5% increase to restore contrast
+        switch ($orig_type) {
+        case IMAGETYPE_GIF:
+            imagegif( $image, $file );
+            break;
+        case IMAGETYPE_PNG:
+            imagepng( $image, $file );
+            break;
+        case IMAGETYPE_JPEG:
+            imagejpeg( $image, $file );
+            break;
+        }
+    } catch (Exception $e) {
+        //tapoetry_trigger_error_message($e->getMessage());
+    }
+    return $meta;
+} 
 
-/* Add shortocode, meta-data, admin css, and mvc_* content types for search */
+/* Add shortocode for readings */ 
 add_shortcode( 'tapoetry-readings', 'tapoetry_readings' );
-add_action('wp_head', 'mvc_metadata');
+/* add sepia image type, add meta-data to mvc_* content types, load admin css */
+add_action('after_setup_theme','tapoetry_thumbnail_sepia_size');
+add_action('wp_head', 'tapoetry_mvc_metadata');
 add_action('mvc_admin_init', 'tapoetry_on_mvc_admin_init');
-add_filter('pre_get_posts', 'filter_search');
+/* add mvc_* content types for search, apply sepia to sepia thumbnail image type and add to Media Library */
+add_filter('pre_get_posts', 'tapoetry_filter_search');
+add_filter('wp_generate_attachment_metadata','tapoetry_thumbnail_sepia_filter');
+add_filter( 'image_size_names_choose', 'tapoetry_add_custom_sizes' );
