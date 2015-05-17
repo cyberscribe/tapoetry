@@ -1,6 +1,6 @@
 # TAPoetry wp-mvc Demo Application
 
-This Wordpress plugin demonstrates some of the capabilites of the [wp-mvc](https://github.com/tombenner/wp-mvc) plugin framework. Like the [simple event calendar example](https://github.com/tombenner/wp-mvc/tree/master/examples/events-calendar-example) that comes bundled with wp-mvc, it demonstrates many of the features outlined in the [documentation](http://wpmvc.org/). However, unlike this theoretical example, the TAPoetry plugin is a fully-fledged application currently in use to support [a dynamic global arts organisation](http://www.transatlanticpoetry.com/).
+This Wordpress plugin demonstrates some of the capabilites of the [wp-mvc](https://github.com/tombenner/wp-mvc) plugin framework. Like the [simple event calendar example](https://github.com/tombenner/wp-mvc/tree/master/examples/events-calendar-example) that comes bundled with wp-mvc, it demonstrates many of the features outlined in the [documentation](http://wpmvc.org/). However, unlike this simple theoretical example, the TAPoetry plugin is a fully-fledged application currently in use to support [a dynamic global arts organisation](http://www.transatlanticpoetry.com/).
 
 Our hope is that you will borrow from it extensively in your own wp-mvc applications. It may also serve as a useful talking point for future [updates and improvements](https://github.com/tombenner/wp-mvc/issues) to the core wp-mvc framework itself.
 
@@ -9,6 +9,7 @@ Our hope is that you will borrow from it extensively in your own wp-mvc applicat
  * This plugin requires that [wp-mvc](http://wpmvc.org/) be installed from either the [plugin repository](https://wordpress.org/plugins/wp-mvc/) or from [github](https://github.com/tombenner/wp-mvc) and be activated in order to work.
  * This plugin also requires [php gd](https://php.net/manual/en/book.image.php) to render banner and splash screen images
  * This plugin uses a [jetpack shortocde](http://jetpack.me/support/shortcode-embeds/) to display YouTube videos on the readings page
+ * View in this plugin are designed to be used with a [Bootstrap](http://getbootstrap.com/)-based theme
  
 ## See It In Action
 
