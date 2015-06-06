@@ -42,8 +42,18 @@ class wpgd {
 
     /* Get image from URL, resize it, return the image */
     static function resizefromurl( $url, $w, $h ) {
+	$stem = false;
+        preg_match('/\-(\d+)x(\d+)/',$url,$matches);
+	if (sizeof($matches) > 0) {
+		$stem = $matches[0];
+        	$url = str_replace($stem,'',$url); //deconstruct
+	}
         $url_post_id = wpgd::get_attachment_id_from_src($url);
         $url_img_path = get_attached_file($url_post_id);
+	if ($stem) {
+		$url_img_path = str_replace('.jpg',$stem.'.jpg',$url_img_path); //reconstruct
+		$url_img_path = str_replace('.png',$stem.'.png',$url_img_path); //reconstruct
+	}
         $url_img = wpgd::imagecreatefromextension($url_img_path);
         list($url_w, $url_h) = getimagesize($url_img_path);   
         $url_resized = imagecreatetruecolor($w,$h);
