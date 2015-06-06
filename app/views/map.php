@@ -15,10 +15,25 @@
         infowindow = new google.maps.InfoWindow({
             content: ""
         });
-        var pinImage = new google.maps.MarkerImage('https://chart.googleapis.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|958372|684e35');
+        var bounds = new google.maps.LatLngBounds();
+        var pinImage = new google.maps.MarkerImage( '<?php echo plugin_dir_url( dirname(__FILE__) ).'public/images/pin.png'; ?>' );
+        var pinImageHost = new google.maps.MarkerImage( '<?php echo plugin_dir_url( dirname(__FILE__) ).'public/images/pin_host.png'; ?>' );
+        var pinImagePartner = new google.maps.MarkerImage( '<?php echo plugin_dir_url( dirname(__FILE__) ).'public/images/pin_partner.png'; ?>' );
         var markerArray = [
-        <?php foreach($objects as $object): ?>
-            {"lon":"<?php echo $object->lon + (rand(-100,100)/1000); ?>","lat":"<?php echo $object->lat + (rand(-100,100)/1000); ?>","label":"<?php echo $object->__name; ?>","html":"<?php echo '<h3>'.$object->__name.'</h3><img src=\"'.$object->image_url.'\" style=\"max-width: 150px; float: left; margin-right: 1em; margin-bottom: 1em;\" class=\"img-circle\"><p style=\"font-size: 14px;\">'.str_replace('"','\"',trim($object->description)).'</p><a href=\"'.$this->html->object_url($object).'\" class=\"btn btn-primary pull-right\" target=\"_parent\">more</a>'; ?>"},
+        <?php foreach($objects as $object): 
+            switch($object->__model_name) {
+                case 'Host':
+                    $marker = 'pinImageHost';
+                break;
+                case 'Partner':
+                    $marker = 'pinImagePartner';
+                break;
+                default:
+                    $marker = 'pinImage';
+                break;
+            }
+        ?>
+            {"lon":"<?php echo $object->lon + (rand(-500,500)/1000); ?>","lat":"<?php echo $object->lat + (rand(-500,500)/1000); ?>","label":"<?php echo $object->__name; ?>","html":"<?php echo '<h3>'.$object->__name.'</h3><img src=\"'.$object->image_url.'\" style=\"max-width: 150px; float: left; margin-right: 1em; margin-bottom: 1em;\" class=\"img-circle\"><p style=\"font-size: 14px;\">'.str_replace('"','\"',trim($object->description)).'</p><a href=\"'.$this->html->object_url($object).'\" class=\"btn btn-primary pull-right\" target=\"_parent\">more</a>'; ?>","marker":<?php echo $marker; ?>},
         <?php endforeach; ?>
         ];
         var theMarker;
@@ -31,18 +46,21 @@
             lat = theMarker['lat'];
             label = theMarker['label'];
             html = theMarker['html'];
+            marker = theMarker['marker'];
             var marker = new google.maps.Marker({
                 map: map,
                 animation: google.maps.Animation.DROP,
                 position: new google.maps.LatLng(lat,lon),
                 title:  label,
                 html: html,
-                icon: pinImage
+                icon: marker
             });
             google.maps.event.addListener(marker, 'click', function () {
                 infowindow.setContent(this.html);
                 infowindow.open(map,this);
             });
+            bounds.extend(marker.position);
         }
+        map.fitBounds(bounds);
       }
     </script>
