@@ -15,6 +15,18 @@ class ReadingsController extends MvcPublicController {
         parent::show();
     }
 
+    public function upcoming() {
+        $reading = $this->model->find_one(array('conditions' => array(
+                                'Reading.date >=' => date('Y-m-d')),
+                                'order' => 'Reading.date ASC'
+                        ));
+        if (is_object($reading)) {
+            $extra = urlify( $reading->title );
+            $url = MvcRouter::public_url( array('controller' => 'readings', 'action' => 'show', 'id' => $reading->id) );
+            $this->redirect($url . '-' . $extra);
+        }
+    }
+
     /* Check whether an event is currently live, return json representation if so or json false otherwise */
     public function liveNow() {
         header('Cache-Control: max-age=1');
