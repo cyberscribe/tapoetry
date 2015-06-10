@@ -20,7 +20,8 @@ class Reading extends MvcModel {
             'public' => true,
             'show_ui' => true,
             'show_in_menu' => 'edit.php',
-            'supports' => array('title','editor','thumbnail')
+            'supports' => array('title','editor','thumbnail'),
+            'menu_icon' => 'dashicons-desktop',
           ),
           'fields' => array(
             'post_title' => '$title',

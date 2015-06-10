@@ -17,6 +17,7 @@ class Poet extends MvcModel {
             'public' => true,
             'show_ui' => true,
             'show_in_menu' => 'edit.php',
+            'menu_icon' => 'dashicons-groups',
             'supports' => array('title','editor','thumbnail')
           ),
           'fields' => array(

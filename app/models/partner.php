@@ -12,7 +12,8 @@ class Partner extends MvcModel {
             'public' => true,
             'show_ui' => true,
             'show_in_menu' => 'edit.php',
-            'supports' => array('title','editor','thumbnail')
+            'supports' => array('title','editor','thumbnail'),
+            'menu_icon' => 'dashicons-admin-site'
           ),
           'fields' => array(
             'post_title' => '$name',

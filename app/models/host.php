@@ -12,7 +12,8 @@ class Host extends MvcModel {
             'public' => true,
             'show_ui' => true,
             'show_in_menu' => 'edit.php',
-            'supports' => array('title','editor','thumbnail')
+            'supports' => array('title','editor','thumbnail'),
+            'menu_icon' => 'dashicons-groups',
           ),
           'fields' => array(
             'post_title' => 'get_title()',
