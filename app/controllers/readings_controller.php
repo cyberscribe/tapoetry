@@ -23,7 +23,10 @@ class ReadingsController extends MvcPublicController {
         if (is_object($reading)) {
             $extra = urlify( $reading->title );
             $url = MvcRouter::public_url( array('controller' => 'readings', 'action' => 'show', 'id' => $reading->id) );
-            $this->redirect($url . '-' . $extra);
+            $url = substr( $url, 0, (strlen($url) - 1) );
+            header('HTTP/1.x 302 Moved Temporarily');
+            header('Location: '.$url.'-'.$extra);
+            die();
         }
     }
 
