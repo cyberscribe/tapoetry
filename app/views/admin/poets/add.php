@@ -8,3 +8,4 @@
 <?php echo $this->form->input('image_url', array('label' => 'Photo', 'style' => 'width: 300px;')); ?>
 <?php echo $this->form->input('description', array('style' => 'width: 600px; height: 200px')); ?>
 <?php echo $this->form->end('Add'); ?>
+<?php $this->render_view('_upload_js'); ?>

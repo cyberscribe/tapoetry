@@ -160,6 +160,11 @@ function tapoetry_thumbnail_sepia_filter($meta) {
     }
     return $meta;
 } 
+function admin_poets_enqueue_media($hook) {
+    if (is_admin () && false !== strstr($hook,'page_mvc_poets')) {
+        wp_enqueue_media();
+    }
+}
 
 /* Add shortocode for readings */ 
 add_shortcode( 'tapoetry-readings', 'tapoetry_readings' );
@@ -167,6 +172,7 @@ add_shortcode( 'tapoetry-readings', 'tapoetry_readings' );
 add_action('after_setup_theme','tapoetry_thumbnail_sepia_size');
 add_action('wp_head', 'tapoetry_mvc_metadata');
 add_action('mvc_admin_init', 'tapoetry_on_mvc_admin_init');
+add_action ( 'admin_enqueue_scripts', 'admin_poets_enqueue_media' );
 /* add mvc_* content types for search, apply sepia to sepia thumbnail image type and add to Media Library */
 add_filter('pre_get_posts', 'tapoetry_filter_search');
 add_filter('wp_generate_attachment_metadata','tapoetry_thumbnail_sepia_filter');
