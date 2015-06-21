@@ -49,17 +49,6 @@
         </ul>
     </div>
 </div>
-<div class="span12">
-    <h2>On The Map</h2>
-    <div style="max-width: 960px; height:480px;">
-        <iframe src="<?php echo mvc_public_url( array('controller' => 'map', 'id' => $object->id) ); ?>" width="100%" height="480" border="0" style="width: 100%; height: 480px; border: 0;"></iframe>
-        <noframes>
-            <a href="<?php echo mvc_public_url( array('controller' => 'map', 'id' => $object->id) ); ?>">
-                Click here to view the map
-            </a>
-        </noframes>
-    </div>
-
 <?php else: ?>
 
     <h2>Featuring</h2>
@@ -84,6 +73,17 @@
     </div>
 
 <?php endif; ?>
+</div>
+<div class="span12">
+    <h2>On The Map</h2>
+    <div style="max-width: 960px; height:480px;">
+        <iframe src="<?php echo mvc_public_url( array('controller' => 'map', 'id' => $object->id) ); ?>" width="100%" height="480" border="0" style="width: 100%; height: 480px; border: 0;"></iframe>
+        <noframes>
+            <a href="<?php echo mvc_public_url( array('controller' => 'map', 'id' => $object->id) ); ?>">
+                Click here to view the map
+            </a>
+        </noframes>
+    </div>
 </div>
 
 <p class="pull-right">
