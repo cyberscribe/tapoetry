@@ -25,7 +25,7 @@ $formatted_time = preg_replace('/:00$/', '', $object->time);
 <?php endif ?>
 <h2>Sample Post</h2>
 <p>Copy and paste this html into the <em><strong>text</strong></em> tab of a new post to publicise the event on the website and send this content to our email newsletter subscribers. Be sure to preview the post before clicking publish.</p>
-<h3><?php echo sprintf('Our Live Online Poetry Reading, %s %s',date('F', strtotime($object->date)),date('Y', strtotime($object->date))); ?></h3>
+<h3><?php echo sprintf('%s, %s %s', $object->title, date('F', strtotime($object->date)),date('Y', strtotime($object->date))); ?></h3>
 <textarea rows="10" cols="80" onclick="this.focus();this.select()" readonly="readonly" style="width: 600px; height; 200px; white-space: pre-wrap">
 <?php echo sprintf('<a href="%s"><img src="%s" alt="%s" class="alignnone size-full" style="width: 100%%; max-width: 1200px; border: 0" /></a>', $object->url, $object->banner_url ? $object->banner_url : 'http://www.transatlanticpoetry.com/readings/banner/'.$object->id, $object->title); ?>
 
