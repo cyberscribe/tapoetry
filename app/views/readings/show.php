@@ -86,6 +86,20 @@
     </div>
 </div>
 
+<?php if ($object->audio_url): ?>
+<div class="span12">
+    <h2>Audio</h2>
+    <div style="max-width: 960px; height:480px;">
+        <?php echo do_shortcode('[soundcloud url="'.$object->audio_url.'" params="auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&visual=true" width="100%" height="450" iframe="true" /]'); ?>
+    </div>
+</div>
+<?php endif; ?>
+
+<?php if ($object->archive_url): ?>
+<p class="pull-left">
+    <a href="<?php echo $object->archive_url; ?>" target="_blank" rel="alternate">Archival Version</a>
+</p>
+<?php endif; ?>
 <p class="pull-right">
 	<?php echo $this->html->link('All Readings', array('controller' => 'readings')); ?>
 </p>

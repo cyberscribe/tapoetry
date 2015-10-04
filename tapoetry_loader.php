@@ -45,6 +45,8 @@ class TapoetryLoader extends MvcPluginLoader {
               url varchar(255) default NULL,
               banner_url varchar(255) default NULL,
               video_url varchar(255) default NULL,
+              audio_url varchar(255) default NULL,
+              archive_url varchar(255) default NULL,
               is_public tinyint(1) NOT NULL default 0,
               post_id bigint(20) DEFAULT NULL,
               PRIMARY KEY  (id),
