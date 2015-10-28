@@ -7,6 +7,7 @@
         geocoder = new google.maps.Geocoder();
         var mapOptions = {
           zoom: 3,
+          scrollwheel: false,
           center: centerLatLng,
           mapTypeId: google.maps.MapTypeId.ROADMAP,
           styles: [{"featureType":"administrative","elementType":"all","stylers":[{"visibility":"on"},{"lightness":33}]},{"featureType":"landscape","elementType":"all","stylers":[{"color":"#ddd6c8"}]},{"featureType":"poi.park","elementType":"geometry","stylers":[{"color":"#cdc4bc"}]},{"featureType":"poi.park","elementType":"labels","stylers":[{"visibility":"on"},{"lightness":20}]},{"featureType":"road","elementType":"all","stylers":[{"lightness":20}]},{"featureType":"road.highway","elementType":"geometry","stylers":[{"color":"#cdc4bc"}]},{"featureType":"road.arterial","elementType":"geometry","stylers":[{"color":"#cdc4bc"}]},{"featureType":"road.local","elementType":"geometry","stylers":[{"color":"#cdc4bc"}]},{"featureType":"water","elementType":"all","stylers":[{"visibility":"on"},{"color":"#acbcc9"}]}],
@@ -33,7 +34,7 @@
                 break;
             }
         ?>
-            {"lon":"<?php echo $object->lon + (rand(-500,500)/1000); ?>","lat":"<?php echo $object->lat + (rand(-500,500)/1000); ?>","label":"<?php echo $object->__name; ?>","html":"<?php echo '<h3>'.$object->__name.'</h3><img src=\"'.$object->image_url.'\" style=\"max-width: 150px; float: left; margin-right: 1em; margin-bottom: 1em;\" class=\"img-circle\"><p style=\"font-size: 14px;\">'.str_replace('"','\"',trim($object->description)).'</p><a href=\"'.$this->html->object_url($object).'\" class=\"btn btn-primary pull-right\" target=\"_parent\">more</a>'; ?>","marker":<?php echo $marker; ?>},
+            {"lon":"<?php echo $object->lon + (rand(-500,500)/1000); ?>","lat":"<?php echo $object->lat + (rand(-500,500)/1000); ?>","label":"<?php echo $object->__name; ?>","html":"<?php echo '<h3>'.$object->__name.'</h3><img src=\"'.$object->image_url.'\" style=\"max-width: 150px; float: left; margin-right: 1em; margin-bottom: 1em;\" class=\"img-circle\"><p style=\"font-size: 14px;\">'.str_replace('"','\"',trim(str_replace("\n"," ",filter_var($object->description,FILTER_SANITIZE_STRING)))).'</p><a href=\"'.$this->html->object_url($object).'\" class=\"btn btn-primary pull-right\" target=\"_parent\">more</a>'; ?>","marker":<?php echo $marker; ?>},
         <?php endforeach; ?>
         ];
         var theMarker;
