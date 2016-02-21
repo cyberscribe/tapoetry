@@ -22,6 +22,13 @@ class ReadingsController extends MvcPublicController {
         die();
     }
 
+    public function rss() {
+        $readings = $this->Reading->find();
+        $this->set('readings',$readings);
+        header('Content-type: application/rss+xml');
+        $this->render_view('readings/rss', array('layout' => 'bare'));
+    }
+
     public function csv() {
         $autofields = array('title','description','date');
         $otherfields = array('poets');
@@ -106,9 +113,20 @@ class ReadingsController extends MvcPublicController {
         imagecopymerge( $background, $poet2_resized, 180, 40, 0, 0, 120, 120, 90);
 
         /* Add partner image */
-        $hosted_by_url = $reading->partner->image_url;
-        $hosted_by_resized = wpgd::resizefromurl( $hosted_by_url, 200, 200);
-        imagecopymerge( $background, $hosted_by_resized, 980, 75, 0, 0, 200, 200, 90);
+        if ($reading->partner->id == 1 || substr($reading->partner->name,0,20) == 'Transatlantic Poetry') {
+            $hosted_by_url = $reading->host->image_url;
+            $hosted_by_resized = wpgd::resizefromurl( $hosted_by_url, 120, 120);
+            wpgd::imagecircularcrop($hosted_by_resized, 120, 120);
+            imagecopymerge( $background, $hosted_by_resized, 980, 75, 0, 0, 120, 120, 90);
+            /* Add host name */
+            $host_name = $reading->host->name;
+            $host_bbox = imagettfbbox ( 34, 0, 'utopia.ttf', strtoupper($host_name));
+            imagettftext( $background, 12, 0, 980, 215, $darkbrown, 'utopia.ttf', $host_name);
+        } else {
+            $hosted_by_url = $reading->partner->image_url;
+            $hosted_by_resized = wpgd::resizefromurl( $hosted_by_url, 200, 200);
+            imagecopymerge( $background, $hosted_by_resized, 980, 75, 0, 0, 200, 200, 90);
+        }
 
         /* Add first poet name */
         $poet1_name = $reading->poets[0]->name;
@@ -159,11 +177,6 @@ class ReadingsController extends MvcPublicController {
         $poet2_resized = wpgd::resizefromurl( $poet2_image_url, 120, 120);
         wpgd::imagecircularcrop($poet2_resized, 120, 120);
         imagecopymerge( $background, $poet2_resized, 500, 140, 0, 0, 120, 120, 90);
-
-        /* Add partner image */
-        $hosted_by_url = $reading->partner->image_url;
-        $hosted_by_resized = wpgd::resizefromurl( $hosted_by_url, 200, 200);
-        imagecopymerge( $background, $hosted_by_resized, 980, 75, 0, 0, 200, 200, 90);
 
         /* Add first poet name */
         $poet1_name = $reading->poets[0]->name;
