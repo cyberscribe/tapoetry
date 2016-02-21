@@ -22,7 +22,7 @@
 
 <?php if ($object->video_url): ?>
 <div class="video-banner roundblack">
-	<?php echo do_shortcode('[youtube='.$object->video_url.']'); ?>
+	<?php echo do_shortcode('[youtube url='.$object->video_url.']'); ?>
 </div>
 <?php endif; ?>
 

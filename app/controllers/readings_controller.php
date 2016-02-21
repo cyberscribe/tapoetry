@@ -14,6 +14,36 @@ class ReadingsController extends MvcPublicController {
         /* Otherwise, use default show behaviour from MvcPublicController */
         parent::show();
     }
+    
+    public function json() {
+        $readings = $this->Reading->find();
+        header('Content-type: application/json');
+        echo json_encode($readings);
+        die();
+    }
+
+    public function csv() {
+        $autofields = array('title','description','date');
+        $otherfields = array('poets');
+        $readings = $this->Reading->find();
+        $out = fopen('php://output', 'w');
+        header('Content-type: text/csv');
+        fputcsv($out, array_merge($autofields,$otherfields));
+        foreach ($readings as $reading_obj) {
+            $reading = array();
+            foreach ($autofields as $k) {
+                $reading[] = $reading_obj->$k;
+            }
+            $poets = array();
+            foreach ($reading_obj->poets as $poet_obj) {
+                $poets[] = $poet_obj->last_name.', '.$poet_obj->first_name;
+            }
+            $reading[] = implode(';',$poets);
+            fputcsv($out, array_values($reading));
+        }
+        fclose($out);
+        die();
+    }
 
     public function upcoming() {
         $reading = $this->model->find_one(array('conditions' => array(
@@ -76,9 +106,20 @@ class ReadingsController extends MvcPublicController {
         imagecopymerge( $background, $poet2_resized, 180, 40, 0, 0, 120, 120, 90);
 
         /* Add partner image */
-        $hosted_by_url = $reading->partner->image_url;
-        $hosted_by_resized = wpgd::resizefromurl( $hosted_by_url, 200, 200);
-        imagecopymerge( $background, $hosted_by_resized, 980, 75, 0, 0, 200, 200, 90);
+        if ($reading->partner->id == 1 || substr($reading->partner->name,0,20) == 'Transatlantic Poetry') {
+            $hosted_by_url = $reading->host->image_url;
+            $hosted_by_resized = wpgd::resizefromurl( $hosted_by_url, 120, 120);
+            wpgd::imagecircularcrop($hosted_by_resized, 120, 120);
+            imagecopymerge( $background, $hosted_by_resized, 980, 75, 0, 0, 120, 120, 90);
+            /* Add host name */
+            $host_name = $reading->host->name;
+            $host_bbox = imagettfbbox ( 34, 0, 'utopia.ttf', strtoupper($host_name));
+            imagettftext( $background, 12, 0, 980, 215, $darkbrown, 'utopia.ttf', $host_name);
+        } else {
+            $hosted_by_url = $reading->partner->image_url;
+            $hosted_by_resized = wpgd::resizefromurl( $hosted_by_url, 200, 200);
+            imagecopymerge( $background, $hosted_by_resized, 980, 75, 0, 0, 200, 200, 90);
+        }
 
         /* Add first poet name */
         $poet1_name = $reading->poets[0]->name;
@@ -129,11 +170,6 @@ class ReadingsController extends MvcPublicController {
         $poet2_resized = wpgd::resizefromurl( $poet2_image_url, 120, 120);
         wpgd::imagecircularcrop($poet2_resized, 120, 120);
         imagecopymerge( $background, $poet2_resized, 500, 140, 0, 0, 120, 120, 90);
-
-        /* Add partner image */
-        $hosted_by_url = $reading->partner->image_url;
-        $hosted_by_resized = wpgd::resizefromurl( $hosted_by_url, 200, 200);
-        imagecopymerge( $background, $hosted_by_resized, 980, 75, 0, 0, 200, 200, 90);
 
         /* Add first poet name */
         $poet1_name = $reading->poets[0]->name;

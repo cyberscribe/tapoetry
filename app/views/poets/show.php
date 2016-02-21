@@ -10,7 +10,11 @@
 </div>
 
 <?php if (!empty( $object->readings )): ?>
-	<h3>Featured Readings</h3>
+    <?php if (sizeof($object->readings) > 1): ?>
+	    <h3>Featured Readings</h3>
+    <?php else: ?>
+	    <h3>Featured Reading</h3>
+    <?php endif; ?>
 	<?php $this->render_view('readings/_banner', array('collection' => $object->readings, 'locals' => array('show_date' => true))); ?>
 <?php endif; ?>
 
