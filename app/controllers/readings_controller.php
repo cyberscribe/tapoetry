@@ -22,6 +22,13 @@ class ReadingsController extends MvcPublicController {
         die();
     }
 
+    public function rss() {
+        $readings = $this->Reading->find();
+        $this->set('readings',$readings);
+        header('Content-type: application/rss+xml');
+        $this->render_view('readings/rss', array('layout' => 'bare'));
+    }
+
     public function csv() {
         $autofields = array('title','description','date');
         $otherfields = array('poets');
