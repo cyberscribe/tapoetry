@@ -14,6 +14,36 @@ class ReadingsController extends MvcPublicController {
         /* Otherwise, use default show behaviour from MvcPublicController */
         parent::show();
     }
+    
+    public function json() {
+        $readings = $this->Reading->find();
+        header('Content-type: application/json');
+        echo json_encode($readings);
+        die();
+    }
+
+    public function csv() {
+        $autofields = array('title','description','date');
+        $otherfields = array('poets');
+        $readings = $this->Reading->find();
+        $out = fopen('php://output', 'w');
+        header('Content-type: text/csv');
+        fputcsv($out, array_merge($autofields,$otherfields));
+        foreach ($readings as $reading_obj) {
+            $reading = array();
+            foreach ($autofields as $k) {
+                $reading[] = $reading_obj->$k;
+            }
+            $poets = array();
+            foreach ($reading_obj->poets as $poet_obj) {
+                $poets[] = $poet_obj->last_name.', '.$poet_obj->first_name;
+            }
+            $reading[] = implode(';',$poets);
+            fputcsv($out, array_values($reading));
+        }
+        fclose($out);
+        die();
+    }
 
     public function upcoming() {
         $reading = $this->model->find_one(array('conditions' => array(

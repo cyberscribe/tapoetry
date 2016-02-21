@@ -8,7 +8,11 @@
 <p itemprop="description"><?php echo $object->description; ?> <br /><a class="btn-small btn-primary pull-right" href="<?php echo $object->url; ?>" target="_blank" itemprop="sameAs url">More<i class="icon-share icon-white"></i></a></p>
 </div>
 
-<h3>Hosted Readings</h3>
+<?php if (sizeof($object->readings) > 1): ?>
+    <h3>Hosted Readings</h3>
+<?php else: ?>
+    <h3>Hosted Reading</h3>
+<?php endif; ?>
 <?php $this->render_view('readings/_banner', array('collection' => $object->readings, 'locals' => array('show_date' => true))); ?>
 <p class="pull-right">
 	<?php echo $this->html->link('All Hosts', array('controller' => 'hosts')); ?>
