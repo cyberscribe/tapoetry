@@ -17,6 +17,15 @@
     <?php endif; ?>
 	<?php $this->render_view('readings/_banner', array('collection' => $object->readings, 'locals' => array('show_date' => true))); ?>
 <?php endif; ?>
+<?php if(class_exists('pt_rec_widget')): ?>
+	    <p class="text-right">
+            <?php if(function_exists('pt_urlify')): ?>
+                <a href="http://poet.tips/poet/<?php echo pt_urlify($object->name); ?>">
+                    Poets Similar to <?php echo $object->name; ?>
+                </a>
+            <?php endif; ?>
+        </p>
+<?php endif; ?>
 
 <p class="pull-right">
 	<?php echo $this->html->link('All Poets', array('controller' => 'poets')); ?>

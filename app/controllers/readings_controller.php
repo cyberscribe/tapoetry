@@ -214,21 +214,38 @@ class ReadingsController extends MvcPublicController {
 
     /* Display event time in multiple timezones for a global audience */
     private function get_time_str( $dt ) {
+        $atlantic_offset = 5;
         if( date('I',$dt) == 1) {
+            $atlantic_offset += 1;
             $tz1 = 'BST';
+        } else {
+            $tz1 = 'GMT';
+        }
+        date_default_timezone_set('America/Los_Angeles');
+        if( date('I',$dt) == 1) {
+            $atlantic_offset -= 1;
             $tz2 = 'EDT';
             $tz3 = 'PDT';
         } else {
-            $tz1 = 'GMT';
             $tz2 = 'EST';
             $tz3 = 'PST';
         }
-        $time_str = date('ga', $dt);
-        $time_str .= ' '.$tz1;
-        $time_str .= ' / '.date('ga', $dt - (5*60*60));
-        $time_str .= ' '.$tz2;
-        $time_str .= ' / '.date('ga', $dt - (8*60*60));
-        $time_str .= ' '.$tz3;
+        date_default_timezone_set('Europe/London');
+        if (date('i',$dt) != '00') {
+            $time_str = date('g:ia', $dt);
+            $time_str .= ' '.$tz1;
+            $time_str .= ' / '.date('g:ia', $dt - ($atlantic_offset*60*60));
+            $time_str .= ' '.$tz2;
+            $time_str .= ' / '.date('g:ia', $dt - (($atlantic_offset + 3)*60*60));
+            $time_str .= ' '.$tz3;
+        } else {
+            $time_str = date('ga', $dt);
+            $time_str .= ' '.$tz1;
+            $time_str .= ' / '.date('ga', $dt - ($atlantic_offset*60*60));
+            $time_str .= ' '.$tz2;
+            $time_str .= ' / '.date('ga', $dt - (($atlantic_offset + 3)*60*60));
+            $time_str .= ' '.$tz3;
+        }
         return $time_str;
     }
 

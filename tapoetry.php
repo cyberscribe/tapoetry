@@ -84,6 +84,59 @@ function tapoetry_mvc_metadata() {
     }
 }
 
+/* Inject OG meta-data to improve social sharing */
+function tapoetry_reading_custom_title($title) {
+    global $post;
+    if (is_mvc_page()) {
+        $cur_url = parse_url($_SERVER["REQUEST_URI"]);
+        $this_url_str = MvcRouter::public_url( array('controller' => 'readings', 'action' => 'index') );
+        $this_url = parse_url( $this_url_str );
+        preg_match('%^('.trailingslashit($this_url['path']).')(\d*)%',trailingslashit($cur_url['path']),$matches);
+        if (isset($matches[2]) && strlen($matches[2]) > 0) {
+            $id = $matches[2];
+            $reading_model = mvc_model('Reading');
+            $reading = $reading_model->find_one_by_id($id);
+            $title = htmlspecialchars($reading->title).' // '.get_bloginfo('name');
+        } else if (isset($matches[1])) {
+            $title = 'Readings // '.get_bloginfo('name');
+        }
+        $this_url_str = MvcRouter::public_url( array('controller' => 'poets', 'action' => 'index') );
+        $this_url = parse_url( $this_url_str );
+        preg_match('%^('.trailingslashit($this_url['path']).')(\d*)%',trailingslashit($cur_url['path']),$matches);
+        if (isset($matches[2]) && strlen($matches[2]) > 0) {
+            $id = $matches[2];
+            $poet_model = mvc_model('Poet');
+            $poet = $poet_model->find_one_by_id($id);
+            $title = htmlspecialchars($poet->name).' // '.get_bloginfo('name');
+        } else if (isset($matches[1])) {
+            $title = 'Poets // '.get_bloginfo('name');
+        }
+        $this_url_str = MvcRouter::public_url( array('controller' => 'partners', 'action' => 'index') );
+        $this_url = parse_url( $this_url_str );
+        preg_match('%^('.trailingslashit($this_url['path']).')(\d*)%',trailingslashit($cur_url['path']),$matches);
+        if (isset($matches[2]) && strlen($matches[2]) > 0) {
+            $id = $matches[2];
+            $partner_model = mvc_model('Partner');
+            $partner = $partner_model->find_one_by_id($id);
+            $title = htmlspecialchars($partner->name).' // '.get_bloginfo('name');
+        } else if (isset($matches[1])) {
+            $title = 'Partners // '.get_bloginfo('name');
+        }
+        $this_url_str = MvcRouter::public_url( array('controller' => 'hosts', 'action' => 'index') );
+        $this_url = parse_url( $this_url_str );
+        preg_match('%^('.trailingslashit($this_url['path']).')(\d*)%',trailingslashit($cur_url['path']),$matches);
+        if (isset($matches[2]) && strlen($matches[2]) > 0) {
+            $id = $matches[2];
+            $host_model = mvc_model('Host');
+            $host = $host_model->find_one_by_id($id);
+            $title = htmlspecialchars($host->name).' // '.get_bloginfo('name');
+        } else if (isset($matches[1])) {
+            $title = 'Hosts // '.get_bloginfo('name');
+        }
+    }
+    return $title;
+}
+
 /* A special shortcode to display readings embedded on a page */
 function tapoetry_readings( $atts ) {
         extract( shortcode_atts( array(
@@ -100,13 +153,17 @@ function tapoetry_readings( $atts ) {
                           ));
             $return = '';
             $path = plugin_dir_path( __FILE__ ).'app/views/readings/';
-            foreach($objects as $object) {
-                if (isset($object->banner_url)) {
-                    ob_start();
-                    include $path.'_banner.php';
-                    $return .= ob_get_contents();
-                    ob_end_clean();
+            if (sizeof($objects) > 0) {
+                foreach($objects as $object) {
+                    if (isset($object->banner_url)) {
+                        ob_start();
+                        include $path.'_banner.php';
+                        $return .= ob_get_contents();
+                        ob_end_clean();
+                    }
                 }
+            } else {
+                $return = '<p class="alert">'.__('Our next broadcast will be announced soon. <a href="/subscribe/">Sign up for our newsletter</a> to be notified.','tapoetry').'</p>';
             }
         break;
     }
@@ -177,3 +234,5 @@ add_action ( 'admin_enqueue_scripts', 'admin_poets_enqueue_media' );
 add_filter('pre_get_posts', 'tapoetry_filter_search');
 add_filter('wp_generate_attachment_metadata','tapoetry_thumbnail_sepia_filter');
 add_filter( 'image_size_names_choose', 'tapoetry_add_custom_sizes' );
+add_filter('wp_title', 'tapoetry_reading_custom_title', 9999, 1);
+add_filter('pre_get_document_title', 'tapoetry_reading_custom_title', 9999, 1);

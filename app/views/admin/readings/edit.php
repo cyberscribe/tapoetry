@@ -45,7 +45,7 @@ $formatted_time = preg_replace('/:00$/', '', $object->time);
 date_default_timezone_set('Europe/London'); //force all dates expressed to be London time
 $date = date('F jS, Y', strtotime($object->date));
 $time = date('H.i T', strtotime($object->date.' '.$object->time)); ?>
-<?php echo sprintf('Tune in for free on <a href="%s" target="_blank">%s at %s</a>. The poets will be reading their work and answering your questions live on air.',$object->url,$date,$time); ?>
+<?php echo sprintf('Tune in for free on <a href="%s" target="_blank">%s at %s</a>. The poets will be reading their work and answering your questions live.',$object->url,$date,$time); ?>
 <?php if (sizeof($object->poets) == 2): ?>
 
 
@@ -59,5 +59,5 @@ $time = date('H.i T', strtotime($object->date.' '.$object->time)); ?>
 <?php echo $object->partner->description; ?> <?php echo $object->host->description; ?>
 
 
-<?php echo sprintf('Tune in live and ask your questions on <a href="%s">The Google Hangouts Event Page</a> or find out more about all of our previous and upcoming broadcasts at <a href="http://www.transatlanticpoetry.com">www.transatlanticpoetry.com</a>.',$object->url); ?>
+<?php echo sprintf('Tune in live and ask your questions on <a href="%s">on the website event page</a> or find out more about all of our previous and upcoming broadcasts at <a href="http://www.transatlanticpoetry.com">www.transatlanticpoetry.com</a>.',$object->url); ?>
 </textarea>

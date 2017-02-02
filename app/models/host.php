@@ -5,6 +5,7 @@ class Host extends MvcModel {
 	var $display_field = 'name';
 	var $has_many = array('Reading');
     var $per_page = 99999; //do not paginate
+    var $order = "Host.last_name, Host.first_name";
 
     var $wp_post = array(
         'post_type' => array(

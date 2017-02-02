@@ -25,7 +25,29 @@
 	<?php echo do_shortcode('[youtube url='.$object->video_url.']'); ?>
 </div>
 <?php endif; ?>
+<?php if (strtotime($iso_dt) >= (time() - 3600)): ?>
+    <div class="span12 text-center">
+        <p>
+            <a style="margin-top: 0.25em;" class="btn btn-primary" href="https://twitter.com/intent/tweet?button_hashtag=tapoetry">Tweet Questions with #tapoetry</a>
+        </p>
+        <script>window.twttr = (function(d, s, id) {
+        var js, fjs = d.getElementsByTagName(s)[0],
+        t = window.twttr || {};
+        if (d.getElementById(id)) return t;
+        js = d.createElement(s);
+        js.id = id;
+        js.src = "https://platform.twitter.com/widgets.js";
+        fjs.parentNode.insertBefore(js, fjs);
 
+        t._e = [];
+        t.ready = function(f) {
+        t._e.push(f);
+        };
+
+        return t;
+        }(document, "script", "twitter-wjs"));</script>
+    </div>
+<?php endif; ?>
 <?php if(sizeof($object->poets) == 2): ?>
 
 <div class="span12">
