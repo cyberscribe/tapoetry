@@ -63,8 +63,12 @@ class ReadingsController extends MvcPublicController {
             $url = substr( $url, 0, (strlen($url) - 1) );
             header('HTTP/1.x 302 Moved Temporarily');
             header('Location: '.$url.'-'.$extra);
-            die();
+        } else {
+            $url = MvcRouter::public_url( array('controller' => 'readings', 'action' => 'index') );
+            header('HTTP/1.x 302 Moved Temporarily');
+            header('Location: '.$url);
         }
+        die();
     }
 
     /* Check whether an event is currently live, return json representation if so or json false otherwise */
