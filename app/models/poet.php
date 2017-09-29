@@ -4,6 +4,7 @@ class Poet extends MvcModel {
 
 	var $display_field = 'name';
 	var $order = 'Poet.last_name, Poet.first_name';
+
     /* Used to specify many-to-many relationship between readings and poets */
     var $has_and_belongs_to_many = array(
         'Reading' => array(

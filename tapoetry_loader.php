@@ -45,9 +45,13 @@ class TapoetryLoader extends MvcPluginLoader {
               url varchar(255) default NULL,
               banner_url varchar(255) default NULL,
               video_url varchar(255) default NULL,
-              audio_url varchar(255) default NULL,
+              mp3_url varchar(255) default NULL,
+              mp3_size int unsigned default 0,
+              mp4_url varchar(255) default NULL,
+              mp4_size int unsigned default 0,
               archive_url varchar(255) default NULL,
               is_public tinyint(1) NOT NULL default 0,
+              published tinyint(1) NOT NULL default 1,
               post_id bigint(20) DEFAULT NULL,
               PRIMARY KEY  (id),
               KEY `post_id` (`post_id`),
@@ -78,6 +82,7 @@ class TapoetryLoader extends MvcPluginLoader {
               url varchar(255) default NULL,
               image_url varchar(255) default NULL,
               description text,
+              published tinyint(1) NOT NULL default 1,
               post_id bigint(20) DEFAULT NULL,
               PRIMARY KEY  (id),
               KEY `post_id` (`post_id`),
@@ -94,6 +99,7 @@ class TapoetryLoader extends MvcPluginLoader {
               url varchar(255) default NULL,
               image_url varchar(255) default NULL,
               description text,
+              published tinyint(1) NOT NULL default 1,
               post_id bigint(20) DEFAULT NULL,
               PRIMARY KEY  (id),
               KEY `post_id` (`post_id`),
@@ -111,9 +117,12 @@ class TapoetryLoader extends MvcPluginLoader {
               url varchar(255) default NULL,
               image_url varchar(255) default NULL,
               description text,
+              producer tinyint default 0,
+              published tinyint(1) NOT NULL default 1,
               post_id bigint(20) DEFAULT NULL,
               PRIMARY KEY  (id),
               KEY `post_id` (`post_id`),
+              KEY `producer` (`producer`)
             )';
         dbDelta($sql);
         

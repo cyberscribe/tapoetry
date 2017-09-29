@@ -2,7 +2,9 @@
 
 <ul class="thumbnails">
 <?php foreach($objects as $object): ?>
-	<?php $this->render_view('_card', array('locals' => array('object' => $object, 'span' => 'span3'))); ?>
+    <?php if ($object->published == 1): ?>
+	    <?php $this->render_view('_card', array('locals' => array('object' => $object, 'span' => 'span3'))); ?>
+    <?php endif; ?>
 <?php endforeach; ?>
 </ul>
 

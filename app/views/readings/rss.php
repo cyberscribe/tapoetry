@@ -4,8 +4,8 @@
         <title>Transatlantic Poetry</title>
         <description>Transatlantic Poetry is global poetry movement bringing some of the most exciting poets from the US, UK, Europe and beyond together for live online readings and conversations. With the help of notable partners, we are transforming the way people experience poetry in the twenty-first century.</description>
         <itunes:author>Transatlantic Poetry</itunes:author>
-        <link>http://www.transatlanticpoetry.com/YourPodcastHomepage/</link>
-        <atom:link href="http://www.transatlanticpoetry.com/readings/rss/" rel="self" type="application/rss+xml" />
+        <link>http://www.transatlanticpoetry.com/podcasts/</link>
+        <atom:link href="http://www.transatlanticpoetry.com<?php echo $_SERVER['REQUEST_URI']; ?><?php echo !empty($_SERVER['QUERY_STRING']) ? '?'.$_SERVER['QUERY_STRING'] : ''; ?>" rel="self" type="application/rss+xml" />
         <itunes:image href="http://www.transatlanticpoetry.com/files/2015/06/atlantic-square.png" />
         <itunes:owner>
             <itunes:name>Robert Peake</itunes:name>
@@ -23,10 +23,20 @@
                 <item>
                     <title><?php echo $reading->title; ?></title>
                     <description><?php echo htmlspecialchars(trim($reading->description)); ?></description>
-                    <itunes:author><?php echo $reading->partner->name; ?></itunes:author>
+                    <itunes:author><?php echo htmlspecialchars($reading->partner->name); ?></itunes:author>
                     <pubDate><?php echo date('r', strtotime($reading->date.' '.$reading->time)); ?></pubDate>
                     <link><?php echo Reading::get_guid( $reading ); ?></link>
                     <guid isPermaLink="true"><?php echo Reading::get_guid( $reading ); ?></guid>
+                    <?php if(!isset($_GET['filter']) || $_GET['filter'] == 'audio'): ?>
+                        <?php if (strlen($reading->mp3_url) > 0 && strlen($reading->mp3_size) > 0): ?>
+                            <enclosure length="<?php echo (int)$reading->mp3_size; ?>" url="<?php echo $reading->mp3_url; ?>" type="audio/mpeg"/>
+                        <?php endif; ?>
+                    <?php endif; ?>
+                    <?php if(!isset($_GET['filter']) || $_GET['filter'] == 'video'): ?>
+                        <?php if (strlen($reading->mp4_url) > 0 && strlen($reading->mp4_size) > 0): ?>
+                            <enclosure length="<?php echo (int)$reading->mp4_size; ?>" url="<?php echo $reading->mp4_url; ?>" type="video/mpeg"/>
+                        <?php endif; ?>
+                    <?php endif; ?>
                 </item>
             <?php endif; ?>
         <?php endforeach; ?>

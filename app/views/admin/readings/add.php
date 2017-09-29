@@ -10,7 +10,5 @@
 <?php echo $this->form->input('url', array('style' => 'width: 200px;')); ?>
 <?php echo $this->form->input('banner_url', array('style' => 'width: 200px;')); ?>
 <?php echo $this->form->input('video_url', array('style' => 'width: 200px;')); ?>
-<?php echo $this->form->input('audio_url', array('style' => 'width: 200px;')); ?>
-<?php echo $this->form->input('archive_url', array('style' => 'width: 200px;')); ?>
 <?php echo $this->form->has_many_dropdown('Poet', $poets, array('style' => 'width: 200px;', 'empty' => true)); ?>
 <?php echo $this->form->end('Add'); ?>

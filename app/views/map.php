@@ -22,6 +22,9 @@
         var pinImagePartner = new google.maps.MarkerImage( '<?php echo plugin_dir_url( dirname(__FILE__) ).'public/images/pin_partner.png'; ?>' );
         var markerArray = [
         <?php foreach($objects as $object): 
+            if ($object->published != 1) {
+                continue;
+            }
             switch($object->__model_name) {
                 case 'Host':
                     $marker = 'pinImageHost';

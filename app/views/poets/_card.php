@@ -1,3 +1,4 @@
+<?php if ($object->published == 1): ?>
 <li class="<?php echo $span; ?>">
 <div class="thumbnail pagination-centered" style="height: 320px;">
 	<a href="<?php echo Poet::get_guid($object); ?>">
@@ -8,3 +9,4 @@
 	</a>
 </div>
 </li>
+<?php endif; ?>

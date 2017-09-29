@@ -28,6 +28,10 @@ class ReadingsController extends MvcPublicController {
         header('Content-type: application/rss+xml');
         $this->render_view('readings/rss', array('layout' => 'bare'));
     }
+    
+    public function feed() {
+        return $this->rss();
+    }
 
     public function csv() {
         $autofields = array('title','description','date');

@@ -13,9 +13,15 @@ $formatted_time = preg_replace('/:00$/', '', $object->time);
 <?php echo $this->form->input('description', array('style' => 'width: 600px; height: 200px')); ?>
 <?php echo $this->form->input('url', array('style' => 'width: 200px;')); ?>
 <?php echo $this->form->input('banner_url', array('style' => 'width: 200px;')); ?>
-<?php echo $this->form->input('video_url', array('style' => 'width: 200px;')); ?>
-<?php echo $this->form->input('audio_url', array('style' => 'width: 200px;')); ?>
-<?php echo $this->form->input('archive_url', array('style' => 'width: 200px;')); ?>
+<?php echo $this->form->input('video_url', array('style' => 'width: 200px;','label' => 'YouTube Video URL')); ?>
+<hr />
+<?php echo $this->form->input('archive_url', array('style' => 'width: 200px;','label' => 'Archive.org Archive URL')); ?>
+<hr />
+<?php echo $this->form->input('mp3_url', array('style' => 'width: 200px;','label' => 'Archive.org MP3 Audio URL')); ?>
+<?php echo $this->form->input('mp3_size', array('style' => 'width: 200px;','label' => 'Archive.org MP3 Audio Size (Bytes)')); ?>
+<?php echo $this->form->input('mp4_url', array('style' => 'width: 200px;','label' => 'Archive.org MP4 Video URL')); ?>
+<?php echo $this->form->input('mp4_size', array('style' => 'width: 200px;','label' => 'Archive.org MP4 Video Size (Bytes)')); ?>
+<hr />
 <?php echo $this->form->has_many_dropdown('Poet', $poets, array('style' => 'width: 200px;', 'empty' => true)); ?>
 <?php echo $this->form->end('Update'); ?>
 <?php if(extension_loaded('gd')): ?>

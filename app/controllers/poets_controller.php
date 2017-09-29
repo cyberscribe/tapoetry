@@ -11,6 +11,11 @@ class PoetsController extends MvcPublicController {
         ));
 
         if (!empty($object)) {
+            if ($object->published != 1) {
+                $index_url = mvc_public_url( array('controller' => 'poets', 'action' => 'index'));
+                header('HTTP/1.x 404 Not Found');
+                $this->redirect($index_url);
+            }
             if (!isset($this->params['extra']) || strlen($this->params['extra']) == 0) {
                     $extra = urlify( $object->name );
                     $base = $_SERVER['REQUEST_URI'];
